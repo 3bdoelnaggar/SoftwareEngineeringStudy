@@ -93,10 +93,7 @@ fun convertInputToAdjacencyList(input: Array<Array<Char>>): ThisGraph {
     adjacentMoves.add(Move(1, -1))
     adjacentMoves.add(Move(1, 1))
     adjacentMoves.add(Move(-1, 1))
-
-    val adjacencyList = ArrayList<ArrayList<Node>>()
     val charsList = ArrayList<Char>()
-
     val graph = ThisGraph()
 
     var vertexIndex = 0
@@ -107,23 +104,18 @@ fun convertInputToAdjacencyList(input: Array<Array<Char>>): ThisGraph {
         for (columnIndex in input[rowIndex].indices) {
             val currentChar = input[rowIndex][columnIndex]
             vertexMatchesIndex[vertexIndex] = currentChar
-            val adjacency = ArrayList<Node>()
             //fill adjacency
             adjacentMoves.forEach { move ->
                 try {
-                    val node = Node()
                     val char = input[rowIndex + move.x][columnIndex + move.y]
                     val adjacentX = rowIndex + move.x
                     val adjacentY = columnIndex + move.y
-                    node.value = char
-                    adjacency.add(node)
                     val adjacentIndex = (4 * adjacentX) + adjacentY
                     graph.addEdge(vertexIndex, adjacentIndex)
                 } catch (exception: Exception) {
 
                 }
             }
-            adjacencyList.add(adjacency)
             charsList.add(currentChar)
             vertexIndex++
 
@@ -212,16 +204,6 @@ class ThisGraph {
     }
 
 
-}
-
-
-class Node {
-    var value: Char = '\u0000'
-    var isVisited = false
-    val adjacency: ArrayList<Node> = ArrayList()
-    override fun toString(): String {
-        return "value:$value"
-    }
 }
 
 data class Move(val x: Int, val y: Int)
