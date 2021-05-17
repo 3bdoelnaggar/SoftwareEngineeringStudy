@@ -2,37 +2,38 @@ package data_structures.graph
 
 import java.util.*
 
-fun main() {
-    val graph = Graph(16)
-    graph.addEdge(2, 5, 10)
-    graph.addEdge(4, 6, 10)
-    graph.addEdge(5, 8, 13)
-    graph.addEdge(7, 9, 12)
 
-    println(graph.edges.contentToString())
-    println("isConnected(5,9):" + graph.isConnected(5, 9))
-    println("isConnected(5,8:)" + graph.isConnected(5, 8))
+fun main() {
+    val graph=GraphAdjacencyList()
+    graph.addEdge(1,3)
+    graph.addEdge(2,4)
+    graph.addEdge(3,8)
+    graph.addEdge(1,5)
+    graph.addEdge(2,5)
+    graph.depthFirstSearch(1)
 
 }
 
-class Graph(verticesNumber: Int) {
-    data class Edge(val v: Int, val w: Int)
-
-    var edges: Array<LinkedList<Edge>> = Array(verticesNumber) {
-        LinkedList<Edge>()
+class GraphAdjacencyList {
+    private val adjacencyList = Array<LinkedList<Int>>(16) {
+        LinkedList()
+    }
+    private val visited = Array(16) {
+        false
     }
 
-    fun addEdge(u: Int, v: Int, w: Int) {
-        edges[u].add(0, Edge(v, w))
+    fun addEdge(vertex: Int, adjacent: Int) {
+        adjacencyList[vertex].add(adjacent)
     }
 
-    fun isConnected(u: Int, v: Int): Boolean {
-        for (edge in edges[u]) {
-            if (edge.v == v) {
-                return true
+    fun depthFirstSearch(vertex: Int) {
+        println(vertex)
+        visited[vertex]=true
+        adjacencyList[vertex].forEach{
+            if(visited[it].not()){
+                depthFirstSearch(it)
             }
         }
-        return false
     }
 
 }
