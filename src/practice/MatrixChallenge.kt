@@ -4,7 +4,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 fun main(args: Array<String>) {
-    val input = arrayOf("aaey,rrum,tgmn,ball", "all,ball,mur,raeymnl,tall,true,trum")
+    val input = arrayOf("aaey,rrum,tgmn,ball", "true,all,ball,mur,raeymnl,tall,trum,said")
     matrixChallenge(input)
 }
 
@@ -23,16 +23,48 @@ fun matrixChallenge(input: Array<String>) {
     }
     val graph = convertInputToAdjacencyList(inputAs2dArray)
     println(graph.toString())
+//    for(i in 0..15){
+//        graph.reset()
+//        graph.depthFirstSearch(i,"")
+//    }
 
-    input[1].split(",").forEach { word ->
+//    input[1].split(",").forEach { word ->
+//        val firstCharIndices = findIndices(graph.nodeLabels.toList(), word[0])
+//        if (firstCharIndices.isEmpty()) {
+//            println("cant create word $word")
+//        } else {
+//            firstCharIndices.forEach {
+//                graph.canWeCreateThisWord(word, it)
+//                graph.reset()
+//            }
+//        }
+//    }
+    graph.reset()
+    input[1].split(",").forEach OUTER@ { word ->
         val firstCharIndices = findIndices(graph.nodeLabels.toList(), word[0])
-        if (firstCharIndices.isEmpty()) {
-            println("cant create word $word")
-        } else {
-            firstCharIndices.forEach {
-                graph.canWeCreateThisWord(word, it)
+        firstCharIndices.forEach FIRSTCHARLOOP@{ firstCharIndex ->
+            var nextCharIndexes = listOf(firstCharIndex)
+            var result = true
+            word.subSequence(1, word.length).forEach { char ->
+                nextCharIndexes.forEach INNER@ {
+                    val charIndexes = graph.searchForCharInNotVisitedAdjacent(char, it)
+                    if (charIndexes.isEmpty()) {
+                        result = false
+                        graph.reset()
+                        return@INNER
+                    } else {
+                        nextCharIndexes = charIndexes
+                        result = true
+                    }
+                }
+            }
+            if (result) {
+                println("created word: $word started from index:$firstCharIndex")
+                graph.reset()
+                return@OUTER
             }
         }
+
     }
 
 
@@ -64,7 +96,6 @@ fun convertInputToAdjacencyList(input: Array<Array<Char>>): ThisGraph {
 
     val adjacencyList = ArrayList<ArrayList<Node>>()
     val charsList = ArrayList<Char>()
-    val result = Pair<List<Char>, ArrayList<ArrayList<Node>>>(charsList, adjacencyList)
 
     val graph = ThisGraph()
 
@@ -120,13 +151,15 @@ class ThisGraph {
         adjacencyList[vertex].add(adjacent)
     }
 
-    fun depthFirstSearch(node: Int) {
-        println(nodeLabels[node])
+    fun depthFirstSearch(node: Int, chars: String) {
         visited[node] = true
+        val char = nodeLabels[node]
         adjacencyList[node].forEach {
             if (visited[it].not()) {
-                depthFirstSearch(it)
+                println(chars)
+                println(chars.reversed())
 
+                depthFirstSearch(it, chars + char)
             }
         }
 
@@ -146,17 +179,36 @@ class ThisGraph {
                     } else {
                         println("done")
                     }
-                } else {
-                    println("visited")
                 }
             }
 
         }
     }
 
+    fun searchForCharInNotVisitedAdjacent(char: Char, vertexIndex: Int): List<Int> {
+        val result = ArrayList<Int>()
+        visited[vertexIndex] = true
+        val adjacent = adjacencyList[vertexIndex]
+        adjacent.forEach {
+            if (visited[it].not()) {
+                if (nodeLabels[it] == char) {
+                    result.add(it)
+                }
+            }
+        }
+        return result
+
+    }
+
 
     override fun toString(): String {
-        return adjacencyList.contentDeepToString()
+        return adjacencyList.contentDeepToString() + "\n" + nodeLabels.contentDeepToString()
+    }
+
+    fun reset() {
+        visited.forEachIndexed { index, b ->
+            visited[index] = false
+        }
     }
 
 
@@ -175,12 +227,4 @@ class Node {
 data class Move(val x: Int, val y: Int)
 
 
-fun explore(node: Node) {
-    println(node)
-    node.isVisited = true
-    node.adjacency.forEach {
-        if (node.isVisited.not()) {
-            explore(it)
-        }
-    }
-}
+
