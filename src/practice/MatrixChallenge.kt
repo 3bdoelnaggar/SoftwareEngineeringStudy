@@ -3,6 +3,13 @@ package practice
 import java.util.*
 import kotlin.collections.ArrayList
 
+/*
+    my solution is
+    - convert the chars input ot 2d array
+    - convert to 2d array to adjacent list base on moves from every vertex
+    - take every work take every character of the word find its index search for this index adjacent list with visited nodes as parameter
+ */
+
 fun main(args: Array<String>) {
     val input = arrayOf("aaey,rrum,tgmn,ball", "true,all,ball,mur,raeymnl,tall,trum,said")
     matrixChallenge(input)
@@ -23,22 +30,6 @@ fun matrixChallenge(input: Array<String>) {
     }
     val graph = convertInputToAdjacencyList(inputAs2dArray)
     println(graph.toString())
-//    for(i in 0..15){
-//        graph.reset()
-//        graph.depthFirstSearch(i,"")
-//    }
-
-//    input[1].split(",").forEach { word ->
-//        val firstCharIndices = findIndices(graph.nodeLabels.toList(), word[0])
-//        if (firstCharIndices.isEmpty()) {
-//            println("cant create word $word")
-//        } else {
-//            firstCharIndices.forEach {
-//                graph.canWeCreateThisWord(word, it)
-//                graph.reset()
-//            }
-//        }
-//    }
     graph.reset()
     input[1].split(",").forEach OUTER@ { word ->
         val firstCharIndices = findIndices(graph.nodeLabels.toList(), word[0])
