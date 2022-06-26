@@ -1,6 +1,5 @@
 package designPatterns.factory
 
-import org.w3c.dom.Notation
 
 
 // Chess game

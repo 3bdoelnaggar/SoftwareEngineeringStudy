@@ -1,0 +1,15 @@
+Meeting 
+- Meaningful Names
+    - Use Intention-Revealing Names
+    - Avoid Disinformation
+    - Make Meaningful Distinctions
+    - Use Pronounceable Names
+    - Use Searchable Names
+    - Avoid Encoding
+    - Don't Be Cute
+    - Don’t Pun
+    - Use Solution Domain Names
+    - Use Problem Domain Names
+    - Add Meaningful context
+    - Don’t Add Gratuitous Context
+- 
