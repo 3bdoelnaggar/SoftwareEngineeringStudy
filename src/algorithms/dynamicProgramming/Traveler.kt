@@ -5,10 +5,14 @@ package algorithms.dynamicProgramming
 
 
 fun main() {
-    println(gridTraveler(3, 3))
+    //println(gridTraveler(3, 3))
     println(gridTraveler(3, 3, HashMap()))
-    println(gridTraveler(18, 18))
+    // println(gridTraveler(18, 18))
     println(gridTraveler(18, 18, HashMap()))
+
+
+    println(gridTravelerTabulation(3, 3))
+    println(gridTravelerTabulation(18, 18))
 }
 
 
@@ -24,8 +28,33 @@ fun gridTraveler(m: Int, n: Int): Long {
     return gridTraveler(m - 1, n) + gridTraveler(m, n - 1)
 }
 
+// with tabulation
+fun gridTravelerTabulation(m: Int, n: Int): Long {
+    val table = Array(m + 1) {
+        Array(n + 1) {
+            0L
+        }
+    }
 
-// without memoization
+    table[1][1] = 1
+    for (i in 0..m) {
+        for (j in 0..n) {
+            val column = i + 1
+            val raw = j + 1
+            if (raw < n + 1) {
+                table[i][raw] += table[i][j]
+            }
+            if (column < m + 1) {
+                table[column][j] += table[i][j]
+            }
+        }
+
+    }
+    return table.last().last()
+
+}
+
+
 fun gridTraveler(m: Int, n: Int, knowledge: HashMap<String, Long>): Long {
     val keyNM = "$n,$m"
     val keyMN = "$m,$n"
