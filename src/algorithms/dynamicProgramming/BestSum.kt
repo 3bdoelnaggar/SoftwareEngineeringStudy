@@ -10,8 +10,12 @@ fun main() {
     //println(besSum(8, arrayOf(1, 4, 5)))
 
     println(bestSumUsingKnowledge(8, arrayOf(1, 4, 5), HashMap()))
-     println(bestSumUsingKnowledge(100, arrayOf(1, 2, 5, 25),HashMap()))
+    println(bestSumUsingKnowledge(100, arrayOf(1, 2, 5, 25), HashMap()))
     //println(bestSum(3, arrayOf(1, 2, 3), HashMap()))
+
+    println(bestSumTabulation(8, arrayOf(1, 4, 5)))
+    println(bestSumTabulation(100, arrayOf(1, 2, 5, 25)))
+
 
 }
 
@@ -79,4 +83,32 @@ fun bestSumUsingKnowledge(
     }
     knowledge[targetSum] = shortest
     return shortest
+}
+
+
+fun bestSumTabulation(targetSum: Int, numbers: Array<Int>): ArrayList<Int>? {
+
+    val table = Array<ArrayList<Int>?>(targetSum + 1) {
+        null
+    }
+    table[0] = arrayListOf()
+
+    table.forEachIndexed { index, ints ->
+        if (ints != null) {
+            for (number in numbers) {
+                if (index + number < table.size) {
+                    val bestSumUntilNow = table[index + number]
+
+                    val newSum = ArrayList(ints).apply {
+                        add(number)
+                    }
+                    if (bestSumUntilNow == null || bestSumUntilNow.size > newSum.size) {
+                        table[index + number] = newSum
+                    }
+                }
+            }
+        }
+    }
+    return table.last()
+
 }
