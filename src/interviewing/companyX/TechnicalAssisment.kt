@@ -8,7 +8,6 @@ import kotlin.math.min
  */
 
 
-
 /*
     Given an array of binary digits, 0 and 1 , sort the array so that all zeros are ar one end and all ones are ata the other,
     which end doesn't matter. to sort array swap any adjacent two elements. determine the minimum swap to sort the array.
@@ -31,7 +30,11 @@ fun main() {
     println(minimumUniqueSum(arrayOf(3, 2, 1, 2, 7)))
 
     println("_______________________________ isPossible")
-    print(isPossible(1,2,5,3))
+    println(isPossible7(1, 2, 5, 3))
+
+    println(isPossible4(1, 2, 5, 3))
+
+    println(isPossible7(1, 1, 1, 1))
 
 
 }
@@ -84,6 +87,7 @@ fun insertionSort(binaries: Array<Byte>): Int {
     }
     return numberOfSwaps
 }
+
 //Ramy solution
 fun minimumSwaps(s: String): Int {
     var ones = 0
@@ -138,6 +142,21 @@ fun isPossible4(a: Int, b: Int, c: Int, d: Int): String {
     return result
 }
 
+fun isPossible7(a: Int, b: Int, c: Int, d: Int): String {
+    if (a == c && b == d) {
+        return "Yes"
+    }
+
+    if (a > c || b > d) {
+        return "No"
+    }
+    val result1 = isPossible7(a + b, b, c, d)
+    val result2 = isPossible7(a, b + a, c, d)
+    if (result1 == "Yes") return result1
+    if (result2 == "Yes") return result2
+    return "No"
+}
+
 fun isPossible5(a: Int, b: Int, c: Int, d: Int): String {
     var result = "No"
     var currentC = c
@@ -187,42 +206,41 @@ fun minimumUniqueSum(arr: Array<Int>): Int {
  */
 
 
-
 fun isPossible(a: Int, b: Int, c: Int, d: Int): String {
     var result = "No"
     fun isPos(a: Int, b: Int) {
-        if(a==c&&b==d){
+        if (a == c && b == d) {
             result = "Yes"
             return
         }
-        if(a>c||b>d){
+        if (a > c || b > d) {
             return
         }
 
-        isPos(a+b,b)
-        isPos(a,b+a)
+        isPos(a + b, b)
+        isPos(a, b + a)
 
     }
-    isPos(a,b)
+    isPos(a, b)
     return result
 }
 
 fun isPossible2(a: Int, b: Int, c: Int, d: Int): String {
     var result = "No"
-    var Cc=c
+    var Cc = c
     var Cb = d
 
 
-while (Cc!=0&&Cb!=0){
-    if(Cc>Cb){
-        Cc-=Cb
-    }else{
-        Cb-=Cc
+    while (Cc != 0 && Cb != 0) {
+        if (Cc > Cb) {
+            Cc -= Cb
+        } else {
+            Cb -= Cc
+        }
+        if (a == Cc && Cb == b) {
+            return "Yes"
+        }
     }
-    if(a==Cc&&Cb==b){
-        return "Yes"
-    }
-}
     return result
 }
 
