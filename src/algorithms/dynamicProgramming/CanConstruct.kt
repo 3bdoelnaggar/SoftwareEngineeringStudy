@@ -8,6 +8,9 @@ fun main() {
     println(canConstruct("abcdef", arrayOf("ab", "abc", "cd", "def", "abcd")))
     println(canConstruct("skateboard", arrayOf("bo", "rd", "ate", "t", "ska", "sk", "boar")))
 
+    println(canConstructTabulation("abcdef", arrayOf("ab", "abc", "cd", "def", "abcd")))
+    println(canConstructTabulation("skateboard", arrayOf("bo", "rd", "ate", "t", "ska", "sk", "boar")))
+
     println(
         canConstruct(
             "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef",
@@ -53,4 +56,25 @@ fun canConstruct(word: String, wordBank: Array<String>, knowledge: HashMap<Strin
     return false
 
 
+}
+
+fun canConstructTabulation(word: String, wordBank: Array<String>): Boolean {
+    val table = Array(word.length+1){
+        false
+    }
+    table[0] = true
+
+    table.forEachIndexed { index, b ->
+        if (b) {
+            wordBank.forEach {
+                if (word.substring(index).startsWith(it)) {
+                    if(index+it.length<table.size) {
+                        table[index + it.length] = true
+                    }
+                }
+
+            }
+        }
+    }
+    return table.last()
 }
