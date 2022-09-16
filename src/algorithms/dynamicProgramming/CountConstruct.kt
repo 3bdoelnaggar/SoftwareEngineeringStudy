@@ -60,7 +60,7 @@ fun countConstructTabulation(word: String, wordBank: Array<String>): Int {
             wordBank.forEach {
                 if (word.substring(index).startsWith(it)) {
                     if(index+it.length<table.size) {
-                        table[index + it.length] += 1
+                        table[index + it.length] += table[index]
                     }
                 }
 
