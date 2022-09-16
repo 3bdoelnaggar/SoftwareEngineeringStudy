@@ -9,14 +9,23 @@ package algorithms.dynamicProgramming
 */
 
 fun main() {
-    println(allConstruct("purple", arrayOf("purb", "p", "ur", "le", "pur","ple")))
-    println(allConstruct("abcdef", arrayOf("ab", "abc", "cd", "def", "abcd")))
-    println(allConstruct("skateboard", arrayOf("bo", "rd", "ate", "t", "ska", "sk", "boar")))
+    println(allConstruct("purple", arrayOf("purb", "p", "ur", "le", "pur", "ple")))
+    //println(allConstruct("abcdef", arrayOf("ab", "abc", "cd", "def", "abcd")))
+   // println(allConstruct("skateboard", arrayOf("bo", "rd", "ate", "t", "ska", "sk", "boar")))
 
     println(
         allConstruct(
             "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef",
             arrayOf("e", "ee", "eee", "eeee", "eeeee", "eeeeeeee"), hashMapOf()
+        )
+    )
+
+   println(allConstructTabulation("purple", arrayOf("purb", "p", "ur", "le", "pur", "ple")))
+
+    println(
+        allConstructTabulation(
+            "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef",
+            arrayOf("e", "ee", "eee", "eeee", "eeeee", "eeeeeeee")
         )
     )
 }
@@ -32,7 +41,7 @@ fun allConstruct(word: String, wordBank: Array<String>): ArrayList<ArrayList<Str
         if (word.startsWith(wordInWordBank)) {
             val newTarget = word.substring(wordInWordBank.length)
             result += ArrayList(allConstruct(newTarget, wordBank).map {
-                it.add(0,wordInWordBank)
+                it.add(0, wordInWordBank)
                 it
             })
         }
@@ -61,7 +70,7 @@ fun allConstruct(
             val newTarget = word.substring(wordInWordBank.length)
             result += ArrayList(allConstruct(newTarget, wordBank, knowledge).map {
                 val arrayList = ArrayList(it)
-                arrayList.add(0,wordInWordBank)
+                arrayList.add(0, wordInWordBank)
                 arrayList
             })
         }
@@ -71,5 +80,35 @@ fun allConstruct(
 
     return result
 
+}
+
+fun allConstructTabulation(word: String, wordBank: Array<String>): List<List<String>> {
+
+    val table = Array<ArrayList<ArrayList<String>>>(word.length.plus(1)) {
+        arrayListOf()
+    }
+
+    table[0].add(arrayListOf())
+
+
+
+
+    table.forEachIndexed { index, value ->
+            wordBank.forEach {string->
+                if (word.substring(index).startsWith(string)) {
+                  val new =  value.map {
+                    val i =  ArrayList<String>(it)
+                       i.add(string)
+                      i
+                    }
+
+                    table[index+string.length].addAll(new)
+
+                }
+
+            }
+
+    }
+    return table.last()
 
 }
