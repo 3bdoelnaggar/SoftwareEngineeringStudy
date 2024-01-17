@@ -9,7 +9,7 @@ fun main() {
     graph.addEdge(5, 8, 13)
     graph.addEdge(7, 9, 12)
 
-    println(graph.edges.contentToString())
+    println(graph.edges.contentDeepToString())
     println("isConnected(5,9):" + graph.isConnected(5, 9))
     println("isConnected(5,8:)" + graph.isConnected(5, 8))
 
